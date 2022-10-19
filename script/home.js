@@ -27,13 +27,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let namaValue = nama.value
     let usernameDaftarValue = usernameDaftar.value
     let passwordDaftarValue = passwordDaftar.value
-    localStorage.setItem('namaTersimpan', namaValue)
-    localStorage.setItem('usernameTersimpan', usernameDaftarValue)
-    localStorage.setItem('passwordTersimpan', passwordDaftarValue)
 
     if (passwordDaftarValue.length < 8) {
       alert("Password harus lebih dari 8 karakter")
     } else {
+      localStorage.setItem('namaTersimpan', namaValue)
+      localStorage.setItem('usernameTersimpan', usernameDaftarValue)
+      localStorage.setItem('passwordTersimpan', passwordDaftarValue)
       if (namaValue == "" || usernameDaftarValue == "") {
         alert("Input tidak lengkap!")
       } else {
