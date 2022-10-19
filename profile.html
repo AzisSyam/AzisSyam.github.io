@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style/styleIndex.css">
+  <title>My Profile</title>
+</head>
+
+<body>
+  <header>
+    <div class="navigasi">
+      <img src="assets/image/creeperheadwhite.png" alt="creeperhead">
+      <p id="craft-text">CRAFT</p>
+      <nav class="shift">
+        <ul>
+          <li>
+            <a href="#home">Dashboard</a>
+          </li>
+          <li>
+            <a href="#about">About</a>
+          </li>
+          <li>
+            <a href="#contact">Contact</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      <div class="home" id="home">
+        <img class="foto-profile-home" src="assets/image/my profile image.jpg" alt="foto profile">
+        <h2 class="home-name">Abd. Azis Syam</h2>
+        <div class="biodata-home">
+          <p>NIM: 210210501027</p>
+          <p>Kelas: TEKOM A 2021</p>
+          <p>Hobi: Belajar ngoding</p>
+          <p>Cita-cita: Front End</p>
+        </div>
+        <div class="scrolldowntext">
+          <span class="garis-scrolltext"></span>
+          <p>Scroll down</p>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="about-me" id="about">
+        <div class="konten-tentang-saya">
+          <h2>Discover</h2>
+          <h3>Tentang Saya</h3>
+          <span class="underline-h3"></span>
+          <p class="tentang-saya-text">Hello! nama saya Azis, mahasiswa Universitas Negeri Makassar prodi TEKNIK
+            KOMPUTER. Saat ini saya tertarik untuk mempelajari teknologi yang digunakan oleh seorang front end dalam
+            mengembangkan website. Belakangan ini saya mempelajarai HTML, CSS dan Javascript. Saya berharap
+            suatu saat nanti bisa menjadi seorang front end web developer.</p>
+          <div class="kotak-identitas">
+            <div class="identitas-kiri">
+              <p>Nama: Abd. Azis Syam</p>
+              <p>Phone: +62 823-9342-8609</p>
+              <p>Pengalaman: 5 Bulan</p>
+              <p>Email: abdazissyam99&#64;gmail.com</p>
+            </div>
+            <div class="identitas-kanan">
+              <p>Umur: 19</p>
+              <p>ALamat: Malino, Kab. Gowa</p>
+              <p>Pekerjaan: Mahasiswa</p>
+              <p>Hobi: Belajar ngoding</p>
+            </div>
+          </div>
+        </div>
+        <div class="skill-container">
+          <div class="judul-myskill">
+            <h2>Skill</h2>
+            <span class="underline-h3"></span>
+          </div>
+          <div class="container-kotak-skill">
+            <div class="kotak-skill">
+              <img class="html-css-js-logo" src="assets/image/html.png" alt="html">
+              <h3>HTML</h3>
+              <div class="container-skill">
+                <div class="skill-bar-html"><span class="persentase-skill"></span></div>
+              </div>
+              <span class="level-skill">Pemula</span>
+            </div>
+            <div class="kotak-skill">
+              <img class="html-css-js-logo" src="assets/image/css.png" alt="css">
+              <h3>CSS</h3>
+              <div class="container-skill">
+                <div class="skill-bar-css"><span class="persentase-skill"></span></div>
+              </div>
+              <span class="level-skill">Pemula</span>
+            </div>
+            <div class="kotak-skill">
+              <img class="html-css-js-logo" src="assets/image/java-script.png" alt="javascript">
+              <h3>Javacript</h3>
+              <div class="container-skill">
+                <div class="skill-bar-js"><span class="persentase-skill"></div>
+              </div>
+              <span class="level-skill">Pemula</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <h2>Hubungi Saya</h2>
+    <div class="contact" id="contact">
+      <span class="underline-contact"></span>
+      <div class="inner-medsos-container">
+        <div class="child-medsos-container">
+          <img src="assets/image/facebook1.png" alt="facebook">
+          <a href="https://web.facebook.com/profile.php?id=100028664733913" target="_blank"><span>Azis Syam</span></a>
+        </div>
+        <div class="child-medsos-container">
+          <img src="assets/image/instagram.png" alt="instagram">
+          <a href="https://www.instagram.com/azissyam_03/?hl=id" target="_blank"><span>&#64;azissyam_03</span></a>
+        </div>
+        <div class="child-medsos-container">
+          <img src="assets/image/linkedin.png" alt="linkedin">
+          <a href="https://www.linkedin.com/in/abd-azis-syam-8bb347247/" target="_blank"><span>Abd. Azis Syam</span></a>
+        </div>
+      </div>
+      <hr>
+      <form class="pesan" id="form-pesan">
+        <input type="text" name="nama" id="nama" placeholder="Nama" required autocomplete="off">
+        <input type="email" name="email" id="email" placeholder="Email" required autocomplete="off">
+        <textarea name="pesan" id="pesan" placeholder="Pesan..." required autocomplete="off"></textarea>
+        <button class="tombol-kirim" type="submit">Kirim</button>
+      </form>
+    </div>
+  </footer>
+  <script src="./script/profile.js"></script>
+</body>
+
+</html>
