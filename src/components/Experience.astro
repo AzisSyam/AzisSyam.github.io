@@ -1,0 +1,129 @@
+---
+// Experience.astro - Two-column experience section with sticky left title
+
+const experiences = [
+  {
+    role: "Senior Full-Stack Developer",
+    company: "Hexa Digital Innovations",
+    period: "2024 - Present",
+    description: "Lead developer on high-traffic SaaS applications, driving migration from monolithic PHP setups to modern decoupled architectures utilizing Next.js and secure APIs. Mentored junior staff and optimized database queries to improve processing speeds by 40%.",
+    highlights: ["Redesigned main core products improving SEO ranking & Core Web Vitals.", "Introduced automated testing and deployment workflows via GitHub Actions."]
+  },
+  {
+    role: "Full-Stack Web Developer",
+    company: "Nexa Tech Solutions",
+    period: "2022 - 2024",
+    description: "Developed and maintained full-scale digital architectures including customized management portals, dynamic payment integrations, and responsive landing pages.",
+    highlights: ["Created customizable internal admin dashboard built with Astro & Tailwind.", "Configured Stripe payment integrations for multiple international clients."]
+  },
+  {
+    role: "Junior Software Engineer",
+    company: "Quantum Labs Indonesia",
+    period: "2021 - 2022",
+    description: "Built and optimized RESTful APIs and UI interfaces under senior guidance. Monitored server uptime and debugged client-side issues.",
+    highlights: ["Implemented dynamic charting widgets for database telemetry monitors."]
+  }
+];
+---
+
+<section id="experience" class="relative z-30 h-[400vh] bg-brand-bg text-brand-primary border-t border-brand-primary/20 mt-[-100vh] shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
+  <div class="sticky top-0 h-screen w-full overflow-hidden flex items-center py-16 md:py-24 px-6 md:px-12">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 w-full items-center">
+      
+      <!-- Left Column: Sticky Title with Vertical Accent Line -->
+      <div class="lg:col-span-5">
+        <div class="border-l-[6px] border-brand-primary pl-6 py-2">
+          <h2 class="text-5xl md:text-7xl font-extrabold tracking-tighter leading-[0.85] text-brand-primary uppercase">
+            WORK<br />EXPERIENCE
+          </h2>
+        </div>
+      </div>
+
+      <!-- Right Column: Vertical Experience Flow (Scroll-driven Reveal) -->
+      <div id="experience-container" class="lg:col-span-7 h-[65vh] md:h-[70vh] overflow-hidden relative pr-4">
+        <div id="experience-track" class="flex flex-col space-y-12 will-change-transform">
+          {experiences.map((exp) => (
+            <div class="group border-b border-brand-primary/10 pb-12 last:border-0 last:pb-0">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 space-y-2 md:space-y-0">
+                <div>
+                  <h3 class="text-2xl font-bold tracking-tight text-brand-primary group-hover:text-brand-primary/80 transition-colors">
+                    {exp.role}
+                  </h3>
+                  <p class="text-sm font-semibold tracking-wide text-brand-primary uppercase">
+                    {exp.company}
+                  </p>
+                </div>
+                <span class="px-4 py-1.5 border border-brand-primary text-xs font-semibold rounded-full bg-brand-primary text-brand-bg">
+                  {exp.period}
+                </span>
+              </div>
+              
+              <p class="text-brand-primary/70 font-light leading-relaxed mb-6">
+                {exp.description}
+              </p>
+
+              {exp.highlights && exp.highlights.length > 0 && (
+                <ul class="space-y-2.5">
+                  {exp.highlights.map((highlight) => (
+                    <li class="flex items-start text-sm text-brand-primary/70 font-light">
+                      <span class="mr-3 text-brand-primary font-semibold mt-0.5">•</span>
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  // Setup scroll-driven translation
+  const setupExperienceScroll = () => {
+    // Clean up previous event listener if it exists to prevent memory leaks during page navigation
+    if ((window as any)._experienceScrollListener) {
+      window.removeEventListener('scroll', (window as any)._experienceScrollListener);
+    }
+    
+    const parent = document.getElementById('experience');
+    const container = document.getElementById('experience-container');
+    const track = document.getElementById('experience-track');
+
+    if (!parent || !container || !track) return;
+
+    const onScroll = () => {
+      // If the parent is no longer in the DOM, clean up and return
+      if (!document.getElementById('experience')) {
+        window.removeEventListener('scroll', onScroll);
+        return;
+      }
+
+      const parentRect = parent.getBoundingClientRect();
+      // The scroll height for the active phase (from when Experience reaches top-0 to when next starts entering)
+      const scrollHeight = window.innerHeight;
+      const progress = -parentRect.top / scrollHeight;
+      const clampedProgress = Math.max(0, Math.min(1, progress));
+
+      const trackHeight = track.scrollHeight;
+      const containerHeight = container.clientHeight;
+      const maxTranslate = Math.max(0, trackHeight - containerHeight);
+
+      const yTranslation = clampedProgress * maxTranslate;
+      track.style.transform = `translateY(-${yTranslation}px)`;
+    };
+
+    window.addEventListener('scroll', onScroll);
+    (window as any)._experienceScrollListener = onScroll;
+    
+    // Initial call
+    onScroll();
+  };
+
+  // Run on load and swap
+  setupExperienceScroll();
+  document.addEventListener('astro:page-load', setupExperienceScroll);
+</script>

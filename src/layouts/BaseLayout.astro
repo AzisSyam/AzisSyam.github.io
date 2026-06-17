@@ -1,0 +1,118 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+}
+
+const {
+  title = "Abd. Azis Syam | Software Engineer & Full-Stack Developer",
+  description = "Portfolio of Abd. Azis Syam, a Software Engineer & Full-Stack Developer specializing in high-performance web applications, clean architecture, and modern UX design.",
+  ogImage = "https://AzisSyam.github.io/og-image.jpg",
+  canonicalUrl = Astro.url.href,
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="Abd. Azis Syam, AzisSyam, Software Engineer, Full-Stack Developer, Frontend Developer, Astro, Tailwind CSS, Lenis Scroll, Web Developer Portfolio" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImage} />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Core styling for hiding scrollbar when using Lenis if desired, plus high contrast rules -->
+    <style is:global>
+      html.lenis, html.lenis body {
+        height: auto;
+      }
+
+      .lenis.lenis-smooth {
+        scroll-behavior: auto !important;
+      }
+
+      .lenis.lenis-smooth [data-lenis-prevent] {
+        overflow: clip;
+      }
+
+      .lenis.lenis-stopped {
+        overflow: hidden;
+      }
+
+      .lenis.lenis-scrolling iframe {
+        pointer-events: none;
+      }
+      
+      /* Base styles */
+      body {
+        background-color: #384959;
+        color: #BDDDFC;
+        overflow-x: hidden;
+      }
+
+      /* Selection styling */
+      ::selection {
+        background-color: #BDDDFC;
+        color: #384959;
+      }
+    </style>
+  </head>
+  <body class="font-sans antialiased text-brand-primary selection:bg-brand-primary selection:text-brand-bg">
+    <slot />
+
+    <!-- Lenis Smooth Scroll Setup -->
+    <script>
+      import Lenis from 'lenis';
+
+      // Initialize Lenis
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+        infinite: false,
+      });
+
+      // Animation loop
+      function raf(time: number) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+
+      requestAnimationFrame(raf);
+
+      // Expose to window in case other scripts need it (e.g. to stop/start scroll)
+      (window as any).lenis = lenis;
+    </script>
+  </body>
+</html>

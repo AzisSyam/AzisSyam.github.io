@@ -1,0 +1,167 @@
+---
+// index.astro - Assembles the sections with navigation and curtain reveal architecture
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import Projects from "../components/Projects.astro";
+import Experience from "../components/Experience.astro";
+import Stats from "../components/Stats.astro";
+import FooterContact from "../components/FooterContact.astro";
+---
+
+<BaseLayout>
+  <!-- Floating Pill Navigation Header -->
+  <header class="fixed top-6 left-1/2 -translate-x-1/2 z-[60] w-[95%] sm:w-auto">
+    <nav class="relative flex items-center justify-center gap-0.5 sm:gap-1 bg-brand-bg/85 backdrop-blur-md px-1 sm:px-1.5 py-1 sm:py-1.5 rounded-full border border-brand-primary/20 shadow-2xl max-w-full sm:max-w-md mx-auto">
+      <!-- Sliding Active Pill Highlight -->
+      <div id="nav-indicator" class="absolute bg-brand-primary rounded-full transition-all duration-300 ease-out z-0 opacity-0 pointer-events-none"></div>
+
+      <a 
+        href="#profile" 
+        class="nav-link relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
+      >
+        Profile
+      </a>
+      <a 
+        href="#projects" 
+        class="nav-link relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
+      >
+        Projects
+      </a>
+      <a 
+        href="#experience" 
+        class="nav-link relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
+      >
+        Experience
+      </a>
+      <a 
+        href="#stats" 
+        class="nav-link relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
+      >
+        Stats
+      </a>
+      <a 
+        href="#contact" 
+        class="nav-link relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
+      >
+        Contact
+      </a>
+    </nav>
+  </header>
+
+  <main class="w-full">
+    <!-- Hero Section -->
+    <Hero />
+
+    <!-- Projects Section (Horizontal scroll) -->
+    <Projects />
+
+    <!-- Experience Section (Sticky side header) -->
+    <Experience />
+
+    <!-- Stats Section (GitHub client fetch) -->
+    <Stats />
+  </main>
+
+  <!-- Contact / Reveal Footer Section -->
+  <FooterContact />
+</BaseLayout>
+
+<script>
+  // Setup active navigation link and smooth Lenis scrolling
+  const setupNavigation = () => {
+    const navLinks = document.querySelectorAll('header nav a');
+    const indicator = document.getElementById('nav-indicator');
+    const nav = document.querySelector('header nav');
+    const sections = [
+      { id: 'profile', href: '#profile' },
+      { id: 'projects', href: '#projects' },
+      { id: 'experience', href: '#experience' },
+      { id: 'stats', href: '#stats' },
+      { id: 'contact', href: '#contact' }
+    ];
+
+    const updateActiveLink = () => {
+      // Find the last section whose parent wrapper top has crossed the active threshold (40% of viewport)
+      let activeHref = '#profile';
+      const threshold = window.innerHeight * 0.4;
+
+      for (const section of sections) {
+        const el = document.getElementById(section.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= threshold) {
+            activeHref = section.href;
+          }
+        }
+      }
+
+      let activeLinkElement: HTMLElement | null = null;
+      navLinks.forEach(link => {
+        const isCurrentActive = link.getAttribute('href') === activeHref;
+        if (isCurrentActive) {
+          activeLinkElement = link as HTMLElement;
+          link.classList.add('text-brand-bg', 'font-extrabold');
+          link.classList.remove('text-brand-primary/70');
+        } else {
+          link.classList.remove('text-brand-bg', 'font-extrabold');
+          link.classList.add('text-brand-primary/70');
+        }
+      });
+
+      // Update sliding active indicator position
+      if (activeLinkElement && indicator && nav) {
+        const activeRect = activeLinkElement.getBoundingClientRect();
+        const navRect = nav.getBoundingClientRect();
+
+        const left = activeRect.left - navRect.left;
+        const top = activeRect.top - navRect.top;
+        const width = activeRect.width;
+        const height = activeRect.height;
+
+        indicator.style.left = `${left}px`;
+        indicator.style.top = `${top}px`;
+        indicator.style.width = `${width}px`;
+        indicator.style.height = `${height}px`;
+        indicator.style.opacity = '1';
+      }
+    };
+
+    // Clean up previous event listeners to prevent leaks
+    if ((window as any)._navScrollListener) {
+      window.removeEventListener('scroll', (window as any)._navScrollListener);
+    }
+    if ((window as any)._navResizeListener) {
+      window.removeEventListener('resize', (window as any)._navResizeListener);
+    }
+    
+    window.addEventListener('scroll', updateActiveLink);
+    window.addEventListener('resize', updateActiveLink);
+    (window as any)._navScrollListener = updateActiveLink;
+    (window as any)._navResizeListener = updateActiveLink;
+    
+    // Initial positioning after a short tick
+    setTimeout(updateActiveLink, 50);
+
+    // Intercept clicks for smooth Lenis scrolling
+    navLinks.forEach(link => {
+      const aEl = link as HTMLAnchorElement;
+      if ((aEl as any)._hasScrollClick) return;
+      (aEl as any)._hasScrollClick = true;
+
+      aEl.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = aEl.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          const target = document.querySelector(href);
+          if (target) {
+            (window as any).lenis?.scrollTo(target, { offset: 0, duration: 1.2 });
+          }
+        }
+      });
+    });
+  };
+
+  // Run on load and swap
+  setupNavigation();
+  document.addEventListener('astro:page-load', setupNavigation);
+</script>

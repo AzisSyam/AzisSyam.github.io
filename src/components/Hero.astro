@@ -1,0 +1,84 @@
+---
+// Hero.astro - Minimalist Hero Section with Split Column Layout
+
+const name = "Abd. Azis Syam";
+const tagline = "Software Engineer & Full-Stack Developer";
+const experienceText = "3+ Years of Experience";
+const scrollText = "LET'S SCROLL";
+---
+
+<!-- Tall parent: gives the Hero a scroll zone so Projects slides over it -->
+<div id="profile" class="relative z-10 h-[350vh]">
+  <section class="sticky top-0 h-screen flex flex-col justify-between px-6 py-8 md:px-12 md:py-12 bg-brand-bg text-brand-primary overflow-hidden">
+    <!-- Top spacing (offset for floating nav if any) -->
+    <div class="h-16"></div>
+ 
+    <!-- Main Split Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center my-auto w-full max-w-7xl mx-auto">
+      <!-- Left Column: Bio & Info -->
+      <div class="flex flex-col space-y-8 lg:space-y-12">
+        <div class="space-y-4">
+          <span class="text-sm font-semibold tracking-widest uppercase text-brand-primary/80">Available for Opportunities</span>
+          <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight leading-none text-brand-primary">
+            {name}
+          </h1>
+          <p class="text-xl md:text-2xl font-light text-brand-primary/80 max-w-xl">
+            {tagline}
+          </p>
+        </div>
+ 
+        <!-- Tech Stack Badges (Minimalist pills) -->
+        <div class="flex flex-wrap gap-2">
+          {["TypeScript", "React / Next.js", "Astro", "Tailwind CSS", "Node.js", "PostgreSQL"].map((tech) => (
+            <span class="px-4 py-2 rounded-full border border-brand-primary/20 text-xs font-medium bg-brand-primary/5 text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-colors duration-300">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+ 
+      <!-- Right Column: Profile Image Placeholder -->
+      <div class="flex justify-center lg:justify-end w-full">
+        <div class="relative w-full max-w-md aspect-[4/5] group">
+          <!-- Minimalist High-Contrast Border Box Behind Image -->
+          <div class="absolute inset-0 border border-brand-primary translate-x-4 translate-y-4 transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2"></div>
+          
+          <!-- Image / Gray Box Container -->
+          <div class="absolute inset-0 bg-brand-bg/50 border border-brand-primary/20 overflow-hidden flex items-center justify-center">
+            <!-- Fallback Gray SVG Background / Styled Text -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 space-y-4">
+              <span class="text-xs uppercase tracking-widest text-brand-primary/55">Profile Photo</span>
+              <div class="w-12 h-[1px] bg-brand-primary/30"></div>
+              <span class="text-lg font-bold text-brand-primary">{name}</span>
+            </div>
+            
+            <!-- Modern Styled Tailwind Image -->
+            <img 
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=1000" 
+              alt={name}
+              class="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-700 relative z-10 opacity-90 group-hover:opacity-100"
+              loading="eager"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Bottom Stats & Scroll Indicator -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-t border-brand-primary/10 pt-8 w-full max-w-7xl mx-auto space-y-4 md:space-y-0">
+      <div class="flex items-center space-x-4">
+        <span class="text-2xl font-bold tracking-tight text-brand-primary">{experienceText}</span>
+        <span class="text-brand-primary/30">|</span>
+        <span class="text-sm uppercase tracking-widest text-brand-primary/60">Based in Indonesia</span>
+      </div>
+      
+      <!-- Let's Scroll Indicator with clean animated arrow -->
+      <a href="#projects" class="flex items-center space-x-2 text-xs uppercase tracking-widest font-bold text-brand-primary/80 hover:text-brand-primary group select-none transition-colors duration-300">
+        <span>{scrollText}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform translate-y-0 group-hover:translate-y-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,128 @@
+---
+// Stats.astro - GitHub Live Stats with Counter Animation
+---
+
+<section id="stats" class="relative z-40 h-[400vh] bg-brand-bg text-brand-primary border-t border-brand-primary/20 mt-[-100vh] shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
+  <div class="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center px-6 md:px-12">
+    <div class="max-w-7xl mx-auto w-full">
+      <div class="space-y-2 mb-16 text-center md:text-left">
+        <span class="text-xs uppercase tracking-widest text-brand-primary/80">Live Activity</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-brand-primary">GITHUB METRICS</h2>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+        <!-- Repositories -->
+        <div class="space-y-4 border-l border-brand-primary/20 pl-6 md:pl-8 py-4">
+          <h3 class="text-xs uppercase tracking-widest text-brand-primary/80">Public Repositories</h3>
+          <p class="text-6xl md:text-7xl font-extrabold tracking-tight text-brand-primary">
+            <span class="github-stat" data-target="0" data-fallback="28" id="github-repos">0</span>
+          </p>
+          <p class="text-sm font-light text-brand-primary/60">Live source repositories hosted publicly</p>
+        </div>
+
+        <!-- Followers -->
+        <div class="space-y-4 border-l border-brand-primary/20 pl-6 md:pl-8 py-4">
+          <h3 class="text-xs uppercase tracking-widest text-brand-primary/80">Followers</h3>
+          <p class="text-6xl md:text-7xl font-extrabold tracking-tight text-brand-primary">
+            <span class="github-stat" data-target="0" data-fallback="12" id="github-followers">0</span>
+          </p>
+          <p class="text-sm font-light text-brand-primary/60">Developers following live updates</p>
+        </div>
+
+        <!-- Following -->
+        <div class="space-y-4 border-l border-brand-primary/20 pl-6 md:pl-8 py-4">
+          <h3 class="text-xs uppercase tracking-widest text-brand-primary/80">Following</h3>
+          <p class="text-6xl md:text-7xl font-extrabold tracking-tight text-brand-primary">
+            <span class="github-stat" data-target="0" data-fallback="18" id="github-following">0</span>
+          </p>
+          <p class="text-sm font-light text-brand-primary/60">Active industry profiles connected</p>
+        </div>
+      </div>
+
+      <!-- Extra Client Note -->
+      <div class="mt-16 text-center md:text-left">
+        <p class="text-xs font-mono text-brand-primary/50">
+          Data fetched client-side from api.github.com/users/AzisSyam • Dynamic rendering active
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // GitHub integration & Counter animation script
+  const username = "AzisSyam";
+  const duration = 1500; // Counter animation duration in ms
+
+  // Utility to animate counting
+  const animateCount = (element: HTMLElement, targetValue: number) => {
+    let startTimestamp: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const currentValue = Math.floor(progress * targetValue);
+      element.textContent = currentValue.toString();
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      } else {
+        element.textContent = targetValue.toString();
+      }
+    };
+    window.requestAnimationFrame(step);
+  };
+
+  const fetchGitHubStats = async () => {
+    const reposEl = document.getElementById("github-repos");
+    const followersEl = document.getElementById("github-followers");
+    const followingEl = document.getElementById("github-following");
+
+    if (!reposEl || !followersEl || !followingEl) return;
+
+    try {
+      const response = await fetch(`https://api.github.com/users/${username}`);
+      if (!response.ok) throw new Error("GitHub user API fetch failed");
+      const data = await response.json();
+
+      reposEl.setAttribute("data-target", data.public_repos || "0");
+      followersEl.setAttribute("data-target", data.followers || "0");
+      followingEl.setAttribute("data-target", data.following || "0");
+    } catch (error) {
+      console.warn("Could not retrieve GitHub stats, using fallback details:", error);
+      // Populate target values with fallbacks on failure
+      document.querySelectorAll(".github-stat").forEach((el) => {
+        const fallback = el.getAttribute("data-fallback") || "0";
+        el.setAttribute("data-target", fallback);
+      });
+    }
+  };
+
+  const initStatsObserver = () => {
+    const statsSection = document.getElementById("stats");
+    if (!statsSection) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(async (entry) => {
+        if (entry.isIntersecting) {
+          // Fetch real data
+          await fetchGitHubStats();
+
+          // Animate each metric
+          document.querySelectorAll(".github-stat").forEach((el) => {
+            const target = parseInt(el.getAttribute("data-target") || "0", 10);
+            animateCount(el as HTMLElement, target);
+          });
+
+          // Disconnect observer once triggered
+          observer.unobserve(statsSection);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    observer.observe(statsSection);
+  };
+
+  // Run on page load
+  initStatsObserver();
+  document.addEventListener('astro:page-load', initStatsObserver);
+</script>
