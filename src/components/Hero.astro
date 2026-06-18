@@ -1,5 +1,7 @@
 ---
 // Hero.astro - Minimalist Hero Section with Split Column Layout
+import { Image } from 'astro:assets';
+import profilePhoto from '../assets/images/profile-photo.webp';
 
 const name = "Abd. Azis Syam";
 const tagline = "Software Engineer & Full-Stack Developer";
@@ -8,7 +10,7 @@ const scrollText = "LET'S SCROLL";
 ---
 
 <!-- Tall parent: gives the Hero a scroll zone so Projects slides over it -->
-<div id="profile" class="relative z-10 h-[350vh]">
+<div id="profile" class="relative z-10 h-[250vh]">
   <section class="sticky top-0 h-screen flex flex-col justify-between px-6 py-8 md:px-12 md:py-12 bg-brand-bg text-brand-primary overflow-hidden">
     <!-- Top spacing (offset for floating nav if any) -->
     <div class="h-16"></div>
@@ -28,20 +30,20 @@ const scrollText = "LET'S SCROLL";
         </div>
  
         <!-- Tech Stack Badges (Minimalist pills) -->
-        <div class="flex flex-wrap gap-2">
+        <!-- <div class="flex flex-wrap gap-2">
           {["TypeScript", "React / Next.js", "Astro", "Tailwind CSS", "Node.js", "PostgreSQL"].map((tech) => (
             <span class="px-4 py-2 rounded-full border border-brand-primary/20 text-xs font-medium bg-brand-primary/5 text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-colors duration-300">
               {tech}
             </span>
           ))}
-        </div>
+        </div> -->
       </div>
  
       <!-- Right Column: Profile Image Placeholder -->
-      <div class="flex justify-center lg:justify-end w-full">
-        <div class="relative w-full max-w-md aspect-[4/5] group">
+      <div class="flex justify-center lg:justify-end w-full lg:pr-36">
+        <div class="relative w-full max-w-[300px] aspect-[4/5] group">
           <!-- Minimalist High-Contrast Border Box Behind Image -->
-          <div class="absolute inset-0 border border-brand-primary translate-x-4 translate-y-4 transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2"></div>
+          <div class="absolute inset-0 border border-brand-primary translate-x-2 translate-y-2 transition-transform duration-500 group-hover:translate-x-1.5 group-hover:translate-y-1.5"></div>
           
           <!-- Image / Gray Box Container -->
           <div class="absolute inset-0 bg-brand-bg/50 border border-brand-primary/20 overflow-hidden flex items-center justify-center">
@@ -53,10 +55,10 @@ const scrollText = "LET'S SCROLL";
             </div>
             
             <!-- Modern Styled Tailwind Image -->
-            <img 
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=1000" 
+            <Image 
+              src={profilePhoto} 
               alt={name}
-              class="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-700 relative z-10 opacity-90 group-hover:opacity-100"
+              class="w-full h-full object-cover object-top relative z-10 scale-110 -translate-y-[10px]"
               loading="eager"
             />
           </div>
@@ -67,9 +69,10 @@ const scrollText = "LET'S SCROLL";
     <!-- Bottom Stats & Scroll Indicator -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-t border-brand-primary/10 pt-8 w-full max-w-7xl mx-auto space-y-4 md:space-y-0">
       <div class="flex items-center space-x-4">
-        <span class="text-2xl font-bold tracking-tight text-brand-primary">{experienceText}</span>
+        <!-- <span class="text-2xl font-bold tracking-tight text-brand-primary">{experienceText}</span> -->
         <span class="text-brand-primary/30">|</span>
-        <span class="text-sm uppercase tracking-widest text-brand-primary/60">Based in Indonesia</span>
+        <span class="text-sm uppercase tracking-widest text-brand-primary/60">Based in Makassar, 
+          Indonesia</span>
       </div>
       
       <!-- Let's Scroll Indicator with clean animated arrow -->
