@@ -1,4 +1,6 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
+
 interface Props {
   title?: string;
   description?: string;
@@ -24,6 +26,7 @@ const {
     <meta name="google-site-verification" content="kWyA8uBdQSj5EEJTt8cLyEsVD5gi_ceBUFf0nVdie3g" />
 
     <!-- SEO Meta Tags -->
+    <ViewTransitions />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content="Abd. Azis Syam, AzisSyam, Software Engineer, Full-Stack Developer, Frontend Developer, Astro, Tailwind CSS, Lenis Scroll, Web Developer Portfolio" />

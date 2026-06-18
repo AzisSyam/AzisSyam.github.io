@@ -1,0 +1,418 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { projects } from "../../data/projects";
+
+export async function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<BaseLayout
+  title={`${project.title} | Abd. Azis Syam`}
+  description={project.description}
+>
+  <div
+    class="min-h-screen bg-brand-bg text-brand-primary selection:bg-brand-primary selection:text-brand-bg py-16 px-6 md:px-12"
+  >
+    <div class="max-w-4xl mx-auto space-y-8">
+      <!-- Top Actions / Back Button -->
+      <div>
+        <a
+          href="/"
+          class="inline-flex items-center space-x-2 text-xs uppercase tracking-widest font-bold text-brand-primary/80 hover:text-brand-primary group transition-colors duration-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4 transform translate-x-0 group-hover:-translate-x-1 transition-transform duration-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          <span>Back to Showcase</span>
+        </a>
+      </div>
+
+      <!-- Main Interactive Image Container (Browser frame style) -->
+      <div
+        class="relative w-full aspect-video overflow-hidden border border-brand-primary/20 bg-brand-bg/50 rounded-xl shadow-2xl group/main"
+      >
+        <!-- Main Image -->
+        <img
+          id="main-project-image"
+          src={project.image}
+          alt={project.title}
+          class="w-full h-full object-cover transition-all duration-700 cursor-pointer"
+          transition:name={`project-image-${project.id}`}
+        />
+
+        <!-- Click to Preview Overlay -->
+        <div
+          id="main-image-trigger"
+          class="absolute inset-0 bg-black/40 opacity-0 group-hover/main:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center space-y-3 cursor-pointer z-10"
+        >
+          <!-- Expand Icon -->
+          <div
+            class="w-12 h-12 rounded-full border border-white/40 bg-black/40 flex items-center justify-center text-white backdrop-blur-sm transform scale-90 group-hover/main:scale-100 transition-transform duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l-5 5m11 5l-5-5m5 5v-4m0 4h-4"
+              ></path>
+            </svg>
+          </div>
+          <span class="text-xs font-bold text-white tracking-widest uppercase"
+            >Click to Preview</span
+          >
+        </div>
+
+        <!-- Floating Thumbnail List at Bottom Right -->
+        <div
+          class="absolute right-4 bottom-4 z-20 flex space-x-2 bg-black/60 backdrop-blur-md p-1.5 rounded-lg border border-white/10 shadow-xl max-w-[85%] overflow-x-auto"
+        >
+          {
+            project.screenshots.map((screenshot, index) => (
+              <button
+                class="w-14 sm:w-20 aspect-video rounded overflow-hidden border border-white/20 hover:border-brand-primary transition-all duration-300 flex-shrink-0 cursor-pointer focus:outline-none"
+                data-thumbnail-btn
+                data-index={index}
+                data-src={screenshot}
+                aria-label={`Show screenshot ${index + 1}`}
+              >
+                <img
+                  src={screenshot}
+                  alt={`Thumbnail ${index + 1}`}
+                  class="w-full h-full object-cover"
+                />
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- Main Showcase Header (Title only) -->
+      <div class="space-y-4">
+        <h1
+          class="text-3xl md:text-5xl font-extrabold tracking-tight leading-none text-brand-primary"
+          transition:name={`project-title-${project.id}`}
+        >
+          {project.title}
+        </h1>
+      </div>
+
+      <!-- Role & Tech Stack Section -->
+      <div class="space-y-4">
+        <!-- Role Info -->
+        <div
+          class="flex items-center space-x-2 text-sm text-brand-primary/80 font-light"
+        >
+          <span
+            class="font-bold text-brand-primary uppercase tracking-widest text-xs"
+            >Role:</span
+          >
+          <span>{project.role}</span>
+        </div>
+      </div>
+
+      <!-- Project Description (Full width, no overview heading) -->
+      <div class="space-y-4">
+        <p
+          class="text-base font-light text-brand-primary/80 leading-relaxed whitespace-pre-line"
+        >
+          {project.longDescription}
+        </p>
+      </div>
+
+      <!-- Tech Stack pills -->
+      <div
+        class="h-[1px] w-full bg-gradient-to-r from-brand-primary/35 via-brand-primary/10 to-transparent"
+      >
+      </div>
+      <div class="flex flex-wrap gap-2">
+        {
+          project.tech.map((t) => (
+            <span class="text-xs font-semibold tracking-wider uppercase px-3 py-1.5 bg-brand-primary/5 border border-brand-primary/20 text-brand-primary rounded-full hover:bg-brand-primary hover:text-brand-bg transition-colors duration-300">
+              {t}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Lightbox Modal -->
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-md flex flex-col justify-between p-6 select-none opacity-0 transition-opacity duration-300"
+    role="dialog"
+    aria-modal="true"
+    data-screenshots={JSON.stringify(project.screenshots)}
+  >
+    <!-- Lightbox Header / Close Button -->
+    <div class="flex justify-between items-center w-full max-w-6xl mx-auto">
+      <span
+        id="lightbox-counter"
+        class="text-xs uppercase tracking-widest text-brand-primary/70"
+        >1 / 4</span
+      >
+      <button
+        id="lightbox-close"
+        class="p-2 sm:p-3 rounded-full border border-brand-primary/20 bg-brand-bg hover:bg-brand-primary hover:text-brand-bg text-brand-primary cursor-pointer transition-colors duration-300 focus:outline-none shadow-lg"
+        aria-label="Close lightbox"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Lightbox Interactive Viewer Area -->
+    <div
+      class="relative flex-grow flex items-center justify-center max-w-6xl mx-auto w-full px-4 sm:px-12 my-auto"
+    >
+      <!-- Prev Button -->
+      <button
+        id="lightbox-prev"
+        class="absolute left-0 sm:left-4 z-10 p-2 sm:p-3 rounded-full border border-brand-primary/20 bg-brand-bg hover:bg-brand-primary hover:text-brand-bg text-brand-primary cursor-pointer transition-colors duration-300 focus:outline-none shadow-lg"
+        aria-label="Previous image"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+
+      <!-- Viewer Container -->
+      <div
+        class="relative w-full max-h-[75vh] flex items-center justify-center overflow-hidden"
+      >
+        <img
+          id="lightbox-image"
+          src=""
+          alt="Enlarged screenshot"
+          class="max-w-full max-h-[75vh] object-contain border border-brand-primary/15 shadow-2xl transition-all duration-300 scale-95"
+        />
+      </div>
+
+      <!-- Next Button -->
+      <button
+        id="lightbox-next"
+        class="absolute right-0 sm:right-4 z-10 p-2 sm:p-3 rounded-full border border-brand-primary/20 bg-brand-bg hover:bg-brand-primary hover:text-brand-bg text-brand-primary cursor-pointer transition-colors duration-300 focus:outline-none shadow-lg"
+        aria-label="Next image"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Lightbox Footer / Caption -->
+    <div class="text-center w-full pb-4">
+      <span class="text-xs tracking-widest text-brand-primary/40 uppercase"
+        >Keyboard navigation supported (Esc, ←, →)</span
+      >
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Setup interactive inline gallery & full-screen lightbox modal
+  const setupGalleryAndLightbox = () => {
+    const mainImg = document.getElementById("main-project-image") as HTMLImageElement;
+    const triggerOverlay = document.getElementById("main-image-trigger");
+    const thumbBtns = document.querySelectorAll("[data-thumbnail-btn]");
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightbox-image") as HTMLImageElement;
+    const lightboxCounter = document.getElementById("lightbox-counter");
+    const closeBtn = document.getElementById("lightbox-close");
+    const prevBtn = document.getElementById("lightbox-prev");
+    const nextBtn = document.getElementById("lightbox-next");
+
+    if (!mainImg || !lightbox || !lightboxImage || !lightboxCounter) return;
+
+    // Retrieve screenshots list directly from HTML data attribute to prevent stale variables in Astro View Transitions
+    const screenshots = JSON.parse(lightbox.getAttribute("data-screenshots") || "[]");
+    if (!screenshots.length) return;
+
+    let currentIndex = 0;
+
+    // Helper to update active thumbnail styling
+    const updateThumbnailStyles = () => {
+      thumbBtns.forEach((btn, idx) => {
+        if (idx === currentIndex) {
+          btn.classList.remove("border-white/20");
+          btn.classList.add("border-brand-primary", "scale-105");
+        } else {
+          btn.classList.remove("border-brand-primary", "scale-105");
+          btn.classList.add("border-white/20");
+        }
+      });
+    };
+
+    // Helper to update main display image on the page
+    const updateMainDisplay = () => {
+      if (screenshots[currentIndex]) {
+        mainImg.src = screenshots[currentIndex];
+      }
+      updateThumbnailStyles();
+    };
+
+    // Initialize styling
+    updateThumbnailStyles();
+
+    // Click thumbnails to change the main displayed image
+    thumbBtns.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation(); // Avoid triggering lightbox open immediately
+        const idx = parseInt(btn.getAttribute("data-index") || "0", 10);
+        currentIndex = idx;
+        updateMainDisplay();
+      });
+    });
+
+    // Lightbox modal logic
+    const openLightbox = () => {
+      updateLightboxImage();
+      lightbox.classList.remove("hidden");
+      setTimeout(() => {
+        lightbox.classList.remove("opacity-0");
+        lightbox.classList.add("opacity-100");
+        lightboxImage.classList.remove("scale-95");
+        lightboxImage.classList.add("scale-100");
+      }, 10);
+      document.body.style.overflow = "hidden";
+
+      if ((window as any).lenis) {
+        (window as any).lenis.stop();
+      }
+    };
+
+    const closeLightbox = () => {
+      lightbox.classList.remove("opacity-100");
+      lightbox.classList.add("opacity-0");
+      lightboxImage.classList.remove("scale-100");
+      lightboxImage.classList.add("scale-95");
+      setTimeout(() => {
+        lightbox.classList.add("hidden");
+      }, 300);
+      document.body.style.overflow = "";
+
+      if ((window as any).lenis) {
+        (window as any).lenis.start();
+      }
+      // Sync the main page display to the last viewed lightbox screenshot
+      updateMainDisplay();
+    };
+
+    const navigate = (direction: "next" | "prev") => {
+      if (direction === "next") {
+        currentIndex = (currentIndex + 1) % screenshots.length;
+      } else {
+        currentIndex =
+          (currentIndex - 1 + screenshots.length) % screenshots.length;
+      }
+
+      lightboxImage.style.opacity = "0";
+      setTimeout(() => {
+        updateLightboxImage();
+        lightboxImage.style.opacity = "1";
+      }, 150);
+    };
+
+    const updateLightboxImage = () => {
+      lightboxImage.src = screenshots[currentIndex];
+      lightboxCounter.textContent = `${currentIndex + 1} / ${screenshots.length}`;
+    };
+
+    // Open lightbox when clicking main image or overlay trigger
+    mainImg.addEventListener("click", openLightbox);
+    triggerOverlay?.addEventListener("click", openLightbox);
+
+    // Lightbox actions
+    closeBtn?.addEventListener("click", closeLightbox);
+    prevBtn?.addEventListener("click", () => navigate("prev"));
+    nextBtn?.addEventListener("click", () => navigate("next"));
+
+    // Backdrop click close
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    // Keyboard listeners
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (lightbox.classList.contains("hidden")) return;
+
+      if (e.key === "Escape") {
+        closeLightbox();
+      } else if (e.key === "ArrowRight") {
+        navigate("next");
+      } else if (e.key === "ArrowLeft") {
+        navigate("prev");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup reference
+    (window as any)._lightboxCleanup = () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  };
+
+  // Run on page load (Astro ViewTransitions support - this fires on both initial load and page changes)
+  document.addEventListener("astro:page-load", () => {
+    if (typeof (window as any)._lightboxCleanup === "function") {
+      (window as any)._lightboxCleanup();
+    }
+    setupGalleryAndLightbox();
+  });
+</script>
