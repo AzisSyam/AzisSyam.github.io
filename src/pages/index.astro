@@ -10,40 +10,45 @@ import FooterContact from "../components/FooterContact.astro";
 
 <BaseLayout>
   <!-- Floating Pill Navigation Header -->
-  <header class="fixed top-6 left-1/2 -translate-x-1/2 z-[60] w-[95%] sm:w-auto">
-    <nav class="relative flex items-center justify-center gap-0.5 sm:gap-1 bg-brand-bg/85 backdrop-blur-md px-1 sm:px-1.5 py-1 sm:py-1.5 rounded-full border border-brand-primary/20 shadow-2xl max-w-full sm:max-w-md mx-auto">
+  <header class="fixed bottom-6 sm:bottom-auto sm:top-6 left-1/2 -translate-x-1/2 z-[60] w-[95%] sm:w-auto">
+    <nav class="relative flex items-center justify-center gap-1 bg-brand-bg/85 backdrop-blur-md p-1 sm:p-1.5 rounded-full border border-brand-primary/20 shadow-2xl max-w-full mx-auto">
       <!-- Sliding Active Pill Highlight -->
       <div id="nav-indicator" class="absolute bg-brand-primary rounded-full transition-all duration-300 ease-out z-0 opacity-0 pointer-events-none"></div>
 
       <a 
         href="#profile" 
-        class="nav-link relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
+        class="nav-link relative z-10 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-0 px-3 sm:px-4 py-2 sm:py-2 text-[9px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
       >
-        Profile
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span>
       </a>
       <a 
         href="#projects" 
-        class="nav-link relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
+        class="nav-link relative z-10 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-0 px-3 sm:px-4 py-2 sm:py-2 text-[9px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
       >
-        Projects
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <span>Projects</span>
       </a>
       <a 
         href="#experience" 
-        class="nav-link relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
+        class="nav-link relative z-10 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-0 px-3 sm:px-4 py-2 sm:py-2 text-[9px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
       >
-        Experience
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span>Experience</span>
       </a>
       <a 
         href="#stats" 
-        class="nav-link relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
+        class="nav-link relative z-10 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-0 px-3 sm:px-4 py-2 sm:py-2 text-[9px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
       >
-        Stats
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Stats</span>
       </a>
       <a 
         href="#contact" 
-        class="nav-link relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
+        class="nav-link relative z-10 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-0 px-3 sm:px-4 py-2 sm:py-2 text-[9px] sm:text-xs font-bold uppercase tracking-wider rounded-full text-brand-primary/70 hover:text-brand-primary transition-colors duration-300 select-none"
       >
-        Contact
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>Contact</span>
       </a>
     </nav>
   </header>
